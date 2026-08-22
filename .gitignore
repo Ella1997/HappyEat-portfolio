@@ -1,0 +1,53 @@
+# =========================
+# Visual Studio
+# =========================
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# =========================
+# .NET
+# =========================
+bin/
+obj/
+
+# =========================
+# NuGet
+# =========================
+*.nupkg
+packages/
+
+# =========================
+# Node.js / Vue
+# =========================
+node_modules/
+dist/
+.nuxt/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Local / Secret Settings
+# =========================
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+secret.settings
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db

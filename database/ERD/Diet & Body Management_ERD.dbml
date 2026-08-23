@@ -1,0 +1,107 @@
+
+Table Users {
+  UserID integer [primary key]
+  Username nvarchar(50) [not null]
+  BirthDate date
+  Gender nvarchar(10)
+}
+
+Table BodyRecords{
+  BodyRecordID integer [primary key]
+  UserID integer [not null]
+  RecordDate date [not null]
+  ActivityLevel DECIMAL(4,3) [not null] 
+  Height decimal(5,2) [not null]
+  Weight decimal(5,2) [not null]
+  WaistSize decimal(5,2)
+  NeckSize decimal(5,2)
+  HipSize decimal(5,2)
+  BodyFat decimal(5,2)
+  MuscleMass decimal(5,2)
+  VisceralFat decimal(5,2)
+}
+
+Table UserGoals{
+  GoalID integer [primary key]
+  UserID integer [not null]
+  GoalType nvarchar(10) [not null]
+  TargetWeight decimal(5,2)
+  TargetBodyFat decimal(5,2)
+  StartDate date [not null]
+  TargetDate date
+  IsActive bit [not null]
+}
+
+Table FoodRecords{
+  RecordID integer [primary key]
+  UserID integer [not null]
+  ImageID integer
+  RecordSource nvarchar(20) [not null]
+  RecordDate date [not null]
+  MealType nvarchar(50) 
+  Description nvarchar(500)
+}
+
+Table FoodRecordItems{
+  ItemID integer [primary key]
+  ItemName nvarchar(100) 
+  RecordID integer [not null]
+  FoodID integer 
+  DrinkID integer
+  Quantity DECIMAL(10,2)
+  Unit nvarchar(20) 
+  Calories decimal(10,2) [not null]
+  Carbs decimal(10,2)
+  Protein decimal(10,2)
+  Fat decimal(10,2)
+}
+
+Table FoodImage{
+  ImageID integer [primary key] 
+  UserID integer [not null]
+  ImagePath nvarchar(500)
+  UploadTime datetime2 [not null]
+}
+
+Table FoodDetected{
+  DetectID integer [primary key]
+  ImageID integer [not null]
+  EstimatedFood nvarchar(200)
+  EstimatedWeight decimal(10,2)
+  EstimatedCalories decimal(10,2) [not null]
+  EstimatedCarbs decimal(10,2)
+  EstimatedProtein decimal(10,2)
+  EstimatedFat decimal(10,2)
+  AINote nvarchar(500)
+}
+
+Table Food{
+  FoodID integer [primary key]
+  FoodName nvarchar(50) [not null]
+  FoodCategory nvarchar(50)
+  Calories decimal(10,2) [not null]
+  Carbs decimal(10,2)
+  Protein decimal(10,2)
+  Fat decimal(10,2)
+}
+
+Table Drink{
+  DrinkID integer [primary key]
+  DrinkName nvarchar(50)
+  Size nvarchar(10)
+  DrinkCategory nvarchar(50)
+  Calories decimal(10,2)
+  Carbs decimal(10,2)
+  Protein decimal(10,2)
+  Fat decimal(10,2)
+}
+
+ref: Users.UserID < FoodRecords.UserID
+ref: Users.UserID < BodyRecords.UserID
+ref: FoodImage.ImageID < FoodDetected.ImageID
+ref: FoodRecords.RecordID < FoodRecordItems.RecordID
+ref: FoodRecordItems.FoodID > Food.FoodID
+ref: Users.UserID < FoodImage.UserID
+ref: Users.UserID < UserGoals.UserID
+ref: FoodRecordItems.DrinkID > Drink.DrinkID
+ref: FoodImage.ImageID < FoodRecords.ImageID

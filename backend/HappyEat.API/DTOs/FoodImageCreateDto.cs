@@ -3,6 +3,6 @@
     public class FoodImageCreateDto
     {
         public int UserId { get; set; }
-        public string? ImagePath { get; set; }
+        public string ImagePath { get; set; } = null!;
     }
 }

@@ -1,0 +1,7 @@
+﻿namespace HappyEat.API.Exceptions
+{
+    public class NotFoundException:BusinessException
+    {
+        public NotFoundException(string message) : base(message) { }
+    }
+}

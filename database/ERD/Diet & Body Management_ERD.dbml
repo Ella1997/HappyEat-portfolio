@@ -10,7 +10,7 @@ Table BodyRecords{
   BodyRecordID integer [primary key]
   UserID integer [not null]
   RecordDate date [not null]
-  ActivityLevel DECIMAL(4,3) [not null] 
+  ActivityLevel DECIMAL(4,3) [not null]
   Height decimal(5,2) [not null]
   Weight decimal(5,2) [not null]
   WaistSize decimal(5,2)
@@ -19,6 +19,7 @@ Table BodyRecords{
   BodyFat decimal(5,2)
   MuscleMass decimal(5,2)
   VisceralFat decimal(5,2)
+
 }
 
 Table UserGoals{
@@ -44,12 +45,12 @@ Table FoodRecords{
 
 Table FoodRecordItems{
   ItemID integer [primary key]
-  ItemName nvarchar(100) 
+  ItemName nvarchar(100)
   RecordID integer [not null]
   FoodID integer 
   DrinkID integer
   Quantity DECIMAL(10,2)
-  Unit nvarchar(20) 
+  Unit nvarchar(20)
   Calories decimal(10,2) [not null]
   Carbs decimal(10,2)
   Protein decimal(10,2)
@@ -63,17 +64,6 @@ Table FoodImage{
   UploadTime datetime2 [not null]
 }
 
-Table FoodDetected{
-  DetectID integer [primary key]
-  ImageID integer [not null]
-  EstimatedFood nvarchar(200)
-  EstimatedWeight decimal(10,2)
-  EstimatedCalories decimal(10,2) [not null]
-  EstimatedCarbs decimal(10,2)
-  EstimatedProtein decimal(10,2)
-  EstimatedFat decimal(10,2)
-  AINote nvarchar(500)
-}
 
 Table Food{
   FoodID integer [primary key]
@@ -98,7 +88,6 @@ Table Drink{
 
 ref: Users.UserID < FoodRecords.UserID
 ref: Users.UserID < BodyRecords.UserID
-ref: FoodImage.ImageID < FoodDetected.ImageID
 ref: FoodRecords.RecordID < FoodRecordItems.RecordID
 ref: FoodRecordItems.FoodID > Food.FoodID
 ref: Users.UserID < FoodImage.UserID

@@ -13,8 +13,6 @@ public partial class FoodImage
 
     public DateTime UploadTime { get; set; }
 
-    public virtual ICollection<FoodDetected> FoodDetecteds { get; set; } = new List<FoodDetected>();
-
     public virtual FoodRecord? FoodRecord { get; set; }
 
     public virtual User User { get; set; } = null!;

@@ -22,8 +22,6 @@ public partial class HappyEatDbContext : DbContext
 
     public virtual DbSet<Food> Foods { get; set; }
 
-    public virtual DbSet<FoodDetected> FoodDetecteds { get; set; }
-
     public virtual DbSet<FoodImage> FoodImages { get; set; }
 
     public virtual DbSet<FoodRecord> FoodRecords { get; set; }
@@ -81,30 +79,6 @@ public partial class HappyEatDbContext : DbContext
             entity.Property(e => e.FoodCategory).HasMaxLength(50);
             entity.Property(e => e.FoodName).HasMaxLength(50);
             entity.Property(e => e.Protein).HasColumnType("decimal(10, 2)");
-        });
-
-        modelBuilder.Entity<FoodDetected>(entity =>
-        {
-            entity.HasKey(e => e.DetectId);
-
-            entity.ToTable("FoodDetected");
-
-            entity.Property(e => e.DetectId).HasColumnName("DetectID");
-            entity.Property(e => e.Ainote)
-                .HasMaxLength(500)
-                .HasColumnName("AINote");
-            entity.Property(e => e.EstimatedCalories).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.EstimatedCarbs).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.EstimatedFat).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.EstimatedFood).HasMaxLength(200);
-            entity.Property(e => e.EstimatedProtein).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.EstimatedWeight).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.ImageId).HasColumnName("ImageID");
-
-            entity.HasOne(d => d.Image).WithMany(p => p.FoodDetecteds)
-                .HasForeignKey(d => d.ImageId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_FoodDetected_FoodImage");
         });
 
         modelBuilder.Entity<FoodImage>(entity =>

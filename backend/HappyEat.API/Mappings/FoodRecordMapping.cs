@@ -46,7 +46,7 @@ namespace HappyEat.API.Mappings
                 Items = entity.FoodRecordItems
                     .Select(item => new FoodRecordItemResponseDto
                     {
-                        ItemId = item.RecordId,
+                        ItemId = item.ItemId,
                         ItemName = item.ItemName,
                         RecordId = item.RecordId,
                         FoodId = item.FoodId,

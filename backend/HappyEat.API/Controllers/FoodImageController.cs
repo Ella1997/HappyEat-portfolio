@@ -10,8 +10,8 @@ namespace HappyEat.API.Controllers
     public class FoodImageController:ControllerBase
     {
         //注入FoodImageService
-        private readonly IFoodImageServicecs _service;
-        public FoodImageController(IFoodImageServicecs service)
+        private readonly IFoodImageService _service;
+        public FoodImageController(IFoodImageService service)
         {
             _service = service;
         }

@@ -2,7 +2,7 @@
 
 namespace HappyEat.API.Services.Interfaces
 {
-    public interface IFoodImageServicecs
+    public interface IFoodImageService
     {
         Task<FoodImageResponseDto> CreateAsync(FoodImageCreateDto dto);
         Task<FoodImageResponseDto?> GetByIdAsync(int imageId);

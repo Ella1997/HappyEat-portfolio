@@ -7,7 +7,7 @@ using HappyEat.API.Exceptions;
 
 namespace HappyEat.API.Services
 {
-    public class FoodImageService : IFoodImageServicecs
+    public class FoodImageService : IFoodImageService
     {
         //注入DB
         private readonly HappyEatDbContext _dbContext;

@@ -149,7 +149,6 @@ public partial class HappyEatDbContext : DbContext
 
             entity.HasOne(d => d.Record).WithMany(p => p.FoodRecordItems)
                 .HasForeignKey(d => d.RecordId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_FoodRecordItems_FoodRecords");
         });
 

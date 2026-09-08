@@ -15,7 +15,8 @@ builder.Services.AddDbContext<HappyEatDbContext>(options => options.UseSqlServer
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IFoodImageServicecs, FoodImageService>();
+builder.Services.AddScoped<IFoodImageService, FoodImageService>();
+builder.Services.AddScoped<IFoodRecordService,  FoodRecordService>();
 
 var app = builder.Build();
 

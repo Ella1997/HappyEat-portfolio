@@ -36,6 +36,7 @@ TestResults/
 *.suo
 *.user
 *.sln.docstates
+wwwroot/uploads/*
 
 # Sensitive configuration
 appsettings.json

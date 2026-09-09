@@ -6,12 +6,13 @@ namespace HappyEat.API.Mappings
     public static class FoodImageMapping
     {
         //DTO->Entity
-        public static FoodImage ToEntity(this FoodImageCreateDto dto)
+        public static FoodImage ToEntity(this FoodImageCreateDto dto, string imagePath)
         {
             return new FoodImage
             {
                 UserId = dto.UserId,
-                ImagePath = dto.ImagePath,
+                ImagePath = imagePath,
+                UploadTime = DateTime.Now
             };
         }
 

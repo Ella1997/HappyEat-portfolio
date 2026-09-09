@@ -31,6 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
+app.UseStaticFiles(); //允許瀏覽器透過url取得wwwroot裡的檔案
 
 app.UseAuthorization();
 

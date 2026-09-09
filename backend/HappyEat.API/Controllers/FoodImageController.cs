@@ -28,7 +28,6 @@ namespace HappyEat.API.Controllers
         public async Task<ActionResult<FoodImageResponseDto>> GetById(int imageId)
         {
             var result = await _service.GetByIdAsync(imageId);
-            if (result == null) return NotFound();
             return Ok(result);
         }
 

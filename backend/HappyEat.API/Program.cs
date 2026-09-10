@@ -17,6 +17,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IFoodImageService, FoodImageService>();
 builder.Services.AddScoped<IFoodRecordService,  FoodRecordService>();
+builder.Services.AddScoped<IGeminiService,  GeminiService>();
 
 var app = builder.Build();
 

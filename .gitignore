@@ -36,7 +36,7 @@ TestResults/
 *.suo
 *.user
 *.sln.docstates
-wwwroot/uploads/*
+backend/HappyEat.API/wwwroot/uploads/*
 
 # Sensitive configuration
 appsettings.json

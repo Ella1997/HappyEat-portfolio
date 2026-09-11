@@ -20,8 +20,11 @@ namespace HappyEat.API.Controllers
         public async Task<ActionResult<FoodImageResponseDto>> Create(FoodImageCreateDto dto)
         {
             var result = await _service.CreateAsync(dto);
-
-            return Ok(result);
+            return CreatedAtAction(nameof(GetById), new
+            {
+                imageId = result.ImageId,
+                userId = result.UserId
+            }, result);
         }
 
         [HttpGet("{imageId}")]

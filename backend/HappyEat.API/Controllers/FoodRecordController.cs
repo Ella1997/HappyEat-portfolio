@@ -32,7 +32,11 @@ namespace HappyEat.API.Controllers
         public async Task<ActionResult<FoodImageResponseDto>> Create(FoodRecordCreateDto dto)
         {
             var record = await _foodRecordService.CreateAsync(dto);
-            return Ok(record);
+            return CreatedAtAction(nameof(GetById), new
+            {
+                recordId = record.RecordId,
+                userId = record.UserId
+            }, record);
         }
 
         [HttpPut("{recordId}")]

@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IFoodImageService, FoodImageService>();
 builder.Services.AddScoped<IFoodRecordService,  FoodRecordService>();
 builder.Services.AddScoped<IGeminiService,  GeminiService>();
+builder.Services.AddScoped<IUserGoalService, UserGoalService>();
 
 var app = builder.Build();
 

@@ -5,8 +5,14 @@ using HappyEat.API.Services.Interfaces;
 using HappyEat.API.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
+builder.Services.AddCors(
+    options => { options.AddPolicy("VueFrontend", policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }); }); //允許前端5173網址跨域存取資料(註冊CORS規則)
 
 builder.Services.AddControllers();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -35,6 +41,7 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseStaticFiles(); //允許瀏覽器透過url取得wwwroot裡的檔案
+app.UseCors("VueFrontend"); //啟用CORS middleware
 
 app.UseAuthorization();
 

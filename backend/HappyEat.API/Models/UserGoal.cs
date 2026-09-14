@@ -21,5 +21,7 @@ public partial class UserGoal
 
     public bool IsActive { get; set; }
 
+    public decimal? StartWeight { get; set; }
+
     public virtual User User { get; set; } = null!;
 }

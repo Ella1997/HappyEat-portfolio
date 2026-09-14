@@ -12,9 +12,10 @@ namespace HappyEat.API.Mappings
             {
                 UserId = dto.UserId,
                 GoalType = dto.GoalType,
+                StartWeight = dto.StartWeight,
                 TargetWeight = dto.TargetWeight,
                 TargetBodyFat = dto.TargetBodyFat,
-                StartDate = DateOnly.FromDateTime(DateTime.Today),
+                StartDate = dto.StartDate,
                 TargetDate = dto.TargetDate,
                 IsActive = true,
             };
@@ -27,6 +28,7 @@ namespace HappyEat.API.Mappings
                 GoalId = goal.GoalId,
                 UserId = goal.UserId,
                 GoalType = goal.GoalType,
+                StartWeight = goal.StartWeight,
                 TargetWeight = goal.TargetWeight,
                 TargetBodyFat = goal.TargetBodyFat,
                 StartDate = goal.StartDate,

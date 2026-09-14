@@ -7,10 +7,6 @@ namespace HappyEat.API.Data;
 
 public partial class HappyEatDbContext : DbContext
 {
-    public HappyEatDbContext()
-    {
-    }
-
     public HappyEatDbContext(DbContextOptions<HappyEatDbContext> options)
         : base(options)
     {
@@ -166,6 +162,7 @@ public partial class HappyEatDbContext : DbContext
             entity.Property(e => e.GoalId).HasColumnName("GoalID");
             entity.Property(e => e.GoalType).HasMaxLength(10);
             entity.Property(e => e.IsActive).HasDefaultValue(true, "DF_UserGoals_IsActive");
+            entity.Property(e => e.StartWeight).HasColumnType("decimal(5, 2)");
             entity.Property(e => e.TargetBodyFat).HasColumnType("decimal(5, 2)");
             entity.Property(e => e.TargetWeight).HasColumnType("decimal(5, 2)");
             entity.Property(e => e.UserId).HasColumnName("UserID");

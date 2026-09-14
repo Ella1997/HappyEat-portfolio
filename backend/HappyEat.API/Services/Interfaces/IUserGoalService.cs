@@ -8,7 +8,7 @@ namespace HappyEat.API.Services.Interfaces
         Task<UserGoalResponseDto> GetByIdAsync(int userId, int goalId);
         Task<UserGoalResponseDto> CreateAsync(UserGoalCreateDto dto);
         Task UpdateAsync(int userId, int goalId, UserGoalUpdateDto dto);
-        Task DeleteAsync(int userId, int goalId);
+        Task EndGoalAsync(int userId, int goalId);
 
     }
 }

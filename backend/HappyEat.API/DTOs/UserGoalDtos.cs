@@ -6,9 +6,7 @@
         public string GoalType { get; set; } = null!;
         public decimal? TargetWeight { get; set; }
         public decimal? TargetBodyFat {  get; set; }
-        public DateOnly StartDate { get; set; }
         public DateOnly? TargetDate { get; set; }
-        public bool IsActive { get; set; }
     }
 
     public class UserGoalUpdateDto 
@@ -16,9 +14,7 @@
         public string GoalType { get; set; } = null!;
         public decimal? TargetWeight { get; set; }
         public decimal? TargetBodyFat { get; set; }
-        public DateOnly StartDate { get; set; }
         public DateOnly? TargetDate { get; set; }
-        public bool IsActive { get; set; }
     }
 
     public class UserGoalResponseDto

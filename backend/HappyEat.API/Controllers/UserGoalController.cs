@@ -40,16 +40,16 @@ namespace HappyEat.API.Controllers
         }
 
         [HttpPut("{goalId}")]
-        public async Task<IActionResult> Update(int goalId, int userId, UserGoalUpdateDto dto)
+        public async Task<IActionResult> Update(int userId, int goalId, UserGoalUpdateDto dto)
         {
-            await _userGoalService.UpdateAsync(goalId, userId, dto);
+            await _userGoalService.UpdateAsync(userId, goalId, dto);
             return NoContent();
         }
 
-        [HttpDelete("{goalId}")]
-        public async Task<IActionResult> Delete(int goalId, int userId)
+        [HttpPatch("{goalId}/end")]
+        public async Task<IActionResult> EndGoal(int userId, int goalId)
         {
-            await _userGoalService.DeleteAsync(goalId, userId);
+            await _userGoalService.EndGoalAsync(userId, goalId);
             return NoContent();
         }
     }

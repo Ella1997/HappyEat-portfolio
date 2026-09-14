@@ -14,9 +14,9 @@ namespace HappyEat.API.Mappings
                 GoalType = dto.GoalType,
                 TargetWeight = dto.TargetWeight,
                 TargetBodyFat = dto.TargetBodyFat,
-                StartDate = dto.StartDate,
+                StartDate = DateOnly.FromDateTime(DateTime.Today),
                 TargetDate = dto.TargetDate,
-                IsActive = dto.IsActive,
+                IsActive = true,
             };
         }
         //Entity->Response Dto

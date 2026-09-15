@@ -32,6 +32,9 @@ namespace HappyEat.API.Services
                 .Where(g => g.UserId == dto.UserId && g.IsActive)
                 .ToListAsync();
 
+            //增肌減脂體重的驗證判斷
+            ValidateGoalWeight(dto.GoalType,dto.StartWeight,dto.TargetWeight);
+
             foreach (var goal in activeGoals)
             {
                 goal.IsActive = false;
@@ -93,10 +96,7 @@ namespace HappyEat.API.Services
                 .ToList();
         }
 
-        public async Task UpdateAsync(
-            int userId,
-            int goalId,
-            UserGoalUpdateDto dto)
+        public async Task UpdateAsync(int userId, int goalId, UserGoalUpdateDto dto)
         {
             var goal = await _dbContext.UserGoals
                 .FirstOrDefaultAsync(g =>
@@ -116,6 +116,9 @@ namespace HappyEat.API.Services
                 dto.TargetDate
             );
 
+            //增肌減脂體重的驗證判斷
+            ValidateGoalWeight(dto.GoalType, goal.StartWeight, dto.TargetWeight);
+
             goal.GoalType = dto.GoalType;
             goal.TargetWeight = dto.TargetWeight;
             goal.TargetBodyFat = dto.TargetBodyFat;
@@ -124,9 +127,7 @@ namespace HappyEat.API.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        private static void ValidateGoalDates(
-            DateOnly startDate,
-            DateOnly? targetDate)
+        private static void ValidateGoalDates(DateOnly startDate, DateOnly? targetDate)
         {
             var today = DateOnly.FromDateTime(DateTime.Today);
 
@@ -142,6 +143,26 @@ namespace HappyEat.API.Services
             {
                 throw new BusinessException(
                     "目標日期必須晚於開始日期。"
+                );
+            }
+        }
+
+        private static void ValidateGoalWeight(string goalType, decimal? startWeight, decimal? targetWeight)
+        {
+            if (startWeight == null || targetWeight == null)
+                return;
+
+            if (goalType == "減脂" && targetWeight >= startWeight)
+            {
+                throw new BusinessException(
+                    "減脂目標的目標體重必須低於起始體重。"
+                );
+            }
+
+            if (goalType == "增肌" && targetWeight <= startWeight)
+            {
+                throw new BusinessException(
+                    "增肌目標的目標體重必須高於起始體重。"
                 );
             }
         }

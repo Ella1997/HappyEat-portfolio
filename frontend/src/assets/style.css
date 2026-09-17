@@ -6,7 +6,7 @@
  * 導致 Tailwind v4 預設 hover variant 不生效。
  * Publish 前移除此行，恢復 Tailwind v4 預設 hover 行為。
  */
-@custom-variant hover (&:hover);
+/* @custom-variant hover (&:hover); */
 
 @theme {
   /* Brand */

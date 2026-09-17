@@ -38,11 +38,10 @@ const formatNumber = (value) => {
 };
 
 const formatDate = (dateString) => {
-  if (!dateString) {
-    return "-";
-  }
+  if (!dateString) return "-";
 
-  const [year, month, day] = dateString.split("-");
+  const [datePart] = String(dateString).split("T");
+  const [year, month, day] = datePart.split("-");
 
   return `${year}/${month}/${day}`;
 };
@@ -103,7 +102,7 @@ const handleBackdropClick = () => {
          Modal
     ========================== -->
     <div
-      class="flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-border bg-modal-content shadow-xl"
+      class="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-border bg-modal-content shadow-xl"
       @click.stop
     >
       <!-- =========================
@@ -199,9 +198,38 @@ const handleBackdropClick = () => {
             </div>
 
             <!-- Description -->
-            <h3 class="mt-4 text-2xl font-semibold text-text-primary">
-              {{ record.description || "未命名餐點" }}
-            </h3>
+            <div
+              v-if="record.description"
+              class="mt-5 rounded-2xl border border-border bg-info-medium px-4 py-4"
+            >
+              <div class="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-4 w-4 text-primary-dark"
+                >
+                  <path
+                    d="M12 3a6 6 0 0 0-3.6 10.8c.38.28.6.72.6 1.2v1h6v-1c0-.48.22-.92.6-1.2A6 6 0 0 0 12 3Z"
+                  />
+                  <path d="M9 20h6" />
+                  <path d="M10 16v1" />
+                  <path d="M14 16v1" />
+                </svg>
+
+                <span class="text-sm font-semibold text-text-primary">
+                  AI 飲食建議/ 心得描述
+                </span>
+              </div>
+
+              <p class="mt-2 text-sm leading-6 text-text-secondary">
+                {{ record.description }}
+              </p>
+            </div>
 
             <!-- Source -->
             <div
@@ -253,7 +281,7 @@ const handleBackdropClick = () => {
           <!-- Items Table -->
           <div
             v-else
-            class="overflow-x-auto rounded-2xl border border-border bg-white"
+            class="overflow-x-auto rounded-2xl border border-border bg-white scrollbar-none"
           >
             <table class="w-full min-w-180 border-collapse">
               <thead>

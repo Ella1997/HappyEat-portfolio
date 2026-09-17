@@ -112,6 +112,7 @@ namespace HappyEat.API.Services
             var oldImageId = record.ImageId;
 
             record.ImageId = dto.ImageId;
+            record.RecordDate = dto.RecordDate;
             record.RecordSource = dto.RecordSource;
             record.MealType = dto.MealType;
             record.Description = dto.Description;

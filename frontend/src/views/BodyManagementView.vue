@@ -287,10 +287,23 @@ onMounted(() => {
 
         <button
           type="button"
-          class="rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-hover"
+          class="inline-flex items-center gap-1 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-text-primary shadow-sm transition hover:bg-accent-hover"
           @click="openCreateBodyRecord"
         >
-          ＋ 新增紀錄
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-5 w-5"
+          >
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
+          </svg>
+          新增紀錄
         </button>
       </div>
 

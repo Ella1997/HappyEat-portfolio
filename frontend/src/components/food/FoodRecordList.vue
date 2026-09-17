@@ -62,7 +62,9 @@ const filteredRecords = computed(() => {
 
   // 最新紀錄放最前面
   return result.sort(
-    (a, b) => parseLocalDate(b.recordDate) - parseLocalDate(a.recordDate),
+    (a, b) =>
+      parseLocalDate(b.recordDate) - parseLocalDate(a.recordDate) ||
+      b.recordId - a.recordId,
   );
 });
 
@@ -148,6 +150,22 @@ const handleView = (record) => {
   emit("view", record);
 };
 
+const getRecordTitle = (record) => {
+  const items = record.items ?? [];
+
+  if (items.length === 0) {
+    return record.description || "未命名餐點";
+  }
+
+  if (items.length === 1) {
+    return items[0].itemName || "未命名餐點";
+  }
+
+  const firstItemName = items[0].itemName || "餐點";
+
+  return `${firstItemName} 等 ${items.length} 項`;
+};
+
 // =========================
 // Date
 // =========================
@@ -168,11 +186,10 @@ function getToday() {
 }
 
 const formatDate = (dateString) => {
-  if (!dateString) {
-    return "-";
-  }
+  if (!dateString) return "-";
 
-  const [, month, day] = dateString.split("-");
+  const [datePart] = String(dateString).split("T");
+  const [, month, day] = datePart.split("-");
 
   return `${Number(month)}/${Number(day)}`;
 };
@@ -403,7 +420,7 @@ const getMealTypeClass = (mealType) => {
                       <p
                         class="max-w-55 truncate text-base font-medium text-text-primary"
                       >
-                        {{ record.description || "未命名餐點" }}
+                        {{ getRecordTitle(record) || "未命名餐點" }}
                       </p>
 
                       <p class="mt-1 text-sm text-text-muted">

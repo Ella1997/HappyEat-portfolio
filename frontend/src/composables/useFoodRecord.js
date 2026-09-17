@@ -1,7 +1,7 @@
 import { ref } from "vue";
-import { bodyRecordApi } from "@/services/bodyRecordApi";
+import { foodRecordApi } from "@/services/foodRecordApi";
 
-export function useBodyRecord() {
+export function useFoodRecord() {
   const records = ref([]);
   const loading = ref(false);
   const error = ref(null);
@@ -15,6 +15,7 @@ export function useBodyRecord() {
     } catch (err) {
       error.value = err;
       console.error(errorMessage, err);
+
       throw err; // 將後端回傳的錯誤傳至 View
     } finally {
       loading.value = false;
@@ -23,31 +24,38 @@ export function useBodyRecord() {
 
   const getRecords = async (userId) => {
     await execute(async () => {
-      const response = await bodyRecordApi.getAll(userId);
+      const response = await foodRecordApi.getAll(userId);
       records.value = response.data;
-    }, "取得紀錄失敗: ");
+    }, "取得飲食紀錄失敗: ");
   };
 
   const createRecord = async (data) => {
     await execute(async () => {
-      const response = await bodyRecordApi.create(data);
-      await getRecords(data.userId); //新增後重新取得所有紀錄
+      const response = await foodRecordApi.create(data);
+
+      // 新增後重新取得所有飲食紀錄
+      await getRecords(data.userId);
+
       return response.data;
-    }, "新增紀錄失敗: ");
+    }, "新增飲食紀錄失敗: ");
   };
 
   const updateRecord = async (id, userId, data) => {
     await execute(async () => {
-      await bodyRecordApi.update(id, userId, data);
+      await foodRecordApi.update(id, userId, data);
+
+      // 更新後重新取得所有飲食紀錄
       await getRecords(userId);
-    }, "更新紀錄失敗: ");
+    }, "更新飲食紀錄失敗: ");
   };
 
   const deleteRecord = async (id, userId) => {
     await execute(async () => {
-      await bodyRecordApi.delete(id, userId);
+      await foodRecordApi.delete(id, userId);
+
+      // 刪除後重新取得所有飲食紀錄
       await getRecords(userId);
-    }, "刪除紀錄失敗: ");
+    }, "刪除飲食紀錄失敗: ");
   };
 
   return {

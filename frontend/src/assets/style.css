@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+/*
+ * DEV ONLY:
+ * 本機 Windows 將滑鼠誤判為 coarse pointer，
+ * 導致 Tailwind v4 預設 hover variant 不生效。
+ * Publish 前移除此行，恢復 Tailwind v4 預設 hover 行為。
+ */
+/* @custom-variant hover (&:hover); */
+
+@theme {
+  /* Brand */
+  --color-primary: #b7d84b;
+  --color-primary-dark: #8eaf2f;
+
+  /* Accent */
+  --color-accent: #f6b83f;
+  --color-accent-hover: #e9a82f;
+
+  /* Background */
+  --color-page: #faf8f2;
+  --color-surface: #ffffff;
+  --color-surface-soft: #fbf7ee;
+
+  /* Dashboard */
+  --color-card: #fffdf9;
+
+  /* Warm information scale */
+  --color-info-soft: #fbf7ee;
+  --color-info-medium: #f8efd9;
+  --color-info-strong: #fbe9bc;
+
+  /* Brand soft */
+  --color-primary-soft: #f1f6df;
+
+  /* Modal */
+  --color-modal-header: rgb(242 236 228 / 80%);
+  --color-modal-content: #f7f4ee;
+
+  /* Text */
+  --color-text-primary: #334155;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+
+  /* Border */
+  --color-border: #e8e5dc;
+
+  /* Status */
+  --color-success: #84a83e;
+  --color-danger: #dc6b6b;
+}

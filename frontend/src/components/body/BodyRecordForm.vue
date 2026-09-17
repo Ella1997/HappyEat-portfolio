@@ -6,9 +6,9 @@ const props = defineProps({
     type: Object,
     default: null,
   },
-}); //父傳子(接收父元件給的資料)
+});
 
-const emit = defineEmits(["submit", "cancel"]); //子傳父(把事件/結果通知父元件)
+const emit = defineEmits(["submit", "cancel"]);
 
 const form = reactive({
   recordDate: props.record?.recordDate ?? "",
@@ -37,76 +37,271 @@ const handleSubmit = () => {
     visceralFat: form.visceralFat === "" ? null : Number(form.visceralFat),
   });
 };
-
-const handleCancel = () => {
-  emit("cancel");
-};
 </script>
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <h2>
-      {{ record ? "編輯紀錄" : "新增紀錄" }}
-    </h2>
-    <div>
-      <label>紀錄日期</label>
-      <input v-model="form.recordDate" type="date" required />
+    <!-- 基本資訊 -->
+    <section>
+      <h3 class="mb-4 text-sm font-semibold text-text-primary">基本資訊</h3>
+
+      <div class="grid grid-cols-1 gap-x-5 gap-y-4 md:grid-cols-2">
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            紀錄日期
+          </label>
+
+          <input
+            v-model="form.recordDate"
+            type="date"
+            required
+            class="w-full rounded-xl border border-border bg-white px-4 py-3 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            每週活動量
+          </label>
+
+          <select
+            v-model="form.activityLevel"
+            required
+            class="w-full rounded-xl border border-border bg-white px-4 py-3 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          >
+            <option value="" disabled>請選擇活動程度</option>
+            <option :value="1.2">久坐無運動</option>
+            <option :value="1.375">輕度活動 1~3 天</option>
+            <option :value="1.55">中度活動 3~5 天</option>
+            <option :value="1.725">高強度運動 6~7 天</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 身體組成 -->
+    <section class="mt-4">
+      <h3 class="mb-4 text-sm font-semibold text-text-primary">身體組成數據</h3>
+
+      <div class="grid grid-cols-1 gap-x-5 gap-y-4 md:grid-cols-2">
+        <!-- 身高 -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            身高
+          </label>
+
+          <div class="relative">
+            <input
+              v-model="form.height"
+              type="number"
+              min="1"
+              step="0.1"
+              required
+              placeholder="例如 165"
+              class="w-full rounded-xl border border-border bg-white px-4 py-3 pr-12 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+
+            <span
+              class="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-text-muted"
+            >
+              cm
+            </span>
+          </div>
+        </div>
+
+        <!-- 體重 -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            體重
+          </label>
+
+          <div class="relative">
+            <input
+              v-model="form.weight"
+              type="number"
+              min="1"
+              step="0.1"
+              required
+              placeholder="例如 60"
+              class="w-full rounded-xl border border-border bg-white px-4 py-3 pr-12 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+
+            <span
+              class="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-text-muted"
+            >
+              kg
+            </span>
+          </div>
+        </div>
+
+        <!-- 體脂率 -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            體脂率
+            <span class="font-normal text-text-muted">（選填）</span>
+          </label>
+
+          <div class="relative">
+            <input
+              v-model="form.bodyFat"
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              placeholder="例如 20"
+              class="w-full rounded-xl border border-border bg-white px-4 py-3 pr-12 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+
+            <span
+              class="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-text-muted"
+            >
+              %
+            </span>
+          </div>
+        </div>
+
+        <!-- 肌肉量 -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            肌肉量
+            <span class="font-normal text-text-muted">（選填）</span>
+          </label>
+
+          <div class="relative">
+            <input
+              v-model="form.muscleMass"
+              type="number"
+              min="0"
+              step="0.1"
+              placeholder="例如 40"
+              class="w-full rounded-xl border border-border bg-white px-4 py-3 pr-12 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+
+            <span
+              class="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-text-muted"
+            >
+              kg
+            </span>
+          </div>
+        </div>
+
+        <!-- 內臟脂肪 -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            內臟脂肪
+            <span class="font-normal text-text-muted">（選填）</span>
+          </label>
+
+          <input
+            v-model="form.visceralFat"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="例如 5"
+            class="w-full rounded-xl border border-border bg-white px-4 py-3 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- 圍度尺寸 -->
+    <section class="mt-4">
+      <h3 class="mb-4 text-sm font-semibold text-text-primary">
+        圍度尺寸
+        <span class="font-normal text-text-muted">（選填）</span>
+      </h3>
+
+      <div class="grid grid-cols-1 gap-x-5 gap-y-4 md:grid-cols-3">
+        <!-- 頸圍 -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            頸圍
+          </label>
+
+          <div class="relative">
+            <input
+              v-model="form.neckSize"
+              type="number"
+              min="0"
+              step="0.1"
+              placeholder="例如 32"
+              class="w-full rounded-xl border border-border bg-white px-4 py-3 pr-12 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+
+            <span
+              class="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-text-muted"
+            >
+              cm
+            </span>
+          </div>
+        </div>
+
+        <!-- 腰圍 -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            腰圍
+          </label>
+
+          <div class="relative">
+            <input
+              v-model="form.waistSize"
+              type="number"
+              min="0"
+              step="0.1"
+              placeholder="例如 70"
+              class="w-full rounded-xl border border-border bg-white px-4 py-3 pr-12 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+
+            <span
+              class="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-text-muted"
+            >
+              cm
+            </span>
+          </div>
+        </div>
+
+        <!-- 臀圍 -->
+        <div>
+          <label class="mb-2 block text-sm font-medium text-text-secondary">
+            臀圍
+          </label>
+
+          <div class="relative">
+            <input
+              v-model="form.hipSize"
+              type="number"
+              min="0"
+              step="0.1"
+              placeholder="例如 90"
+              class="w-full rounded-xl border border-border bg-white px-4 py-3 pr-12 text-text-primary outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+
+            <span
+              class="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-text-muted"
+            >
+              cm
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="mt-4 flex justify-end gap-3 border-t border-border pt-5">
+      <button
+        type="button"
+        class="rounded-xl border border-border bg-white px-5 py-2.5 text-sm font-medium text-text-secondary transition hover:bg-surface-soft"
+        @click="emit('cancel')"
+      >
+        取消
+      </button>
+
+      <button
+        type="submit"
+        class="rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-hover"
+      >
+        {{ record ? "儲存修改" : "儲存紀錄" }}
+      </button>
     </div>
-
-    <div>
-      <label>活動程度</label>
-      <select v-model="form.activityLevel">
-        <option :value="1.2">久坐無運動</option>
-        <option :value="1.375">輕度活動 1~3 天</option>
-        <option :value="1.55">中度活動 3~5 天</option>
-        <option :value="1.725">高強度運動 6~7 天</option>
-      </select>
-    </div>
-
-    <div>
-      <label>身高(cm)</label>
-      <input type="number" v-model="form.height" step="0.1" required />
-    </div>
-
-    <div>
-      <label>體重(kg)</label>
-      <input type="number" v-model="form.weight" step="0.1" required />
-    </div>
-
-    <div>
-      <label>腰圍(cm)</label>
-      <input type="number" v-model="form.waistSize" step="0.1" />
-    </div>
-
-    <div>
-      <label>頸圍(cm)</label>
-      <input type="number" v-model="form.neckSize" step="0.1" />
-    </div>
-
-    <div>
-      <label>臀圍(cm)</label>
-      <input type="number" v-model="form.hipSize" step="0.1" />
-    </div>
-
-    <div>
-      <label>體脂率(%)</label>
-      <input type="number" v-model="form.bodyFat" step="0.1" />
-    </div>
-
-    <div>
-      <label>肌肉量(kg)</label>
-      <input type="number" v-model="form.muscleMass" step="0.1" />
-    </div>
-
-    <div>
-      <label>內臟脂肪</label>
-      <input type="number" v-model="form.visceralFat" step="0.1" />
-    </div>
-
-    <button type="submit">
-      {{ record ? "儲存" : "新增" }}
-    </button>
-
-    <button v-if="record" type="button" @click="handleCancel">取消</button>
   </form>
 </template>

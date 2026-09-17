@@ -27,6 +27,7 @@ builder.Services.AddScoped<IGeminiService,  GeminiService>();
 builder.Services.AddScoped<IUserGoalService, UserGoalService>();
 builder.Services.AddScoped<IBodyRecordService, BodyRecordService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFoodSearchService, FoodSearchService>();
 
 var app = builder.Build();
 

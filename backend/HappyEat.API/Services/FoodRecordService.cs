@@ -11,9 +11,11 @@ namespace HappyEat.API.Services
     public class FoodRecordService : IFoodRecordService
     {
         private readonly HappyEatDbContext _dbContext;
-        public FoodRecordService(HappyEatDbContext dbContext)
+        private readonly IWebHostEnvironment _env;
+        public FoodRecordService(HappyEatDbContext dbContext, IWebHostEnvironment env)
         {
             _dbContext = dbContext;
+            _env= env;
         }
         public async Task<FoodRecordResponseDto> CreateAsync(FoodRecordCreateDto dto)
         {
@@ -61,7 +63,26 @@ namespace HappyEat.API.Services
             if (imageId.HasValue)
             {
                 var image = await _dbContext.FoodImages.FirstOrDefaultAsync(r => r.ImageId == imageId);
-                if (image != null) _dbContext.FoodImages.Remove(image);
+                if (image != null) 
+                {
+                    // 刪除 wwwroot/uploads 的實體圖片
+                    if (!string.IsNullOrEmpty(image.ImagePath))
+                    {
+                        var fileName = Path.GetFileName(image.ImagePath);
+                        var filePath = Path.Combine(
+                            _env.WebRootPath,
+                            "uploads",
+                            fileName
+                        );
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
+                    // 刪除 FoodImage DB 資料
+                    _dbContext.FoodImages.Remove(image);
+                }
             }
             await _dbContext.SaveChangesAsync();
         }

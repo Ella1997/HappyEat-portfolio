@@ -4,7 +4,7 @@
 
 HappyEat is a health management platform designed to simplify daily diet tracking and body data management.
 
-This repository focuses on the **Body Management** and **Food Diary** modules, combining body data visualization, nutrition tracking, and AI-assisted food recognition to provide a more intuitive and efficient health management experience.
+This repository focuses on the **Body Management** and **Food Diary** modules, combining body data visualization, nutrition tracking, personalized calorie recommendations, and AI-assisted food recognition.
 
 ---
 
@@ -28,14 +28,6 @@ Upload a meal photo and let Gemini analyze food items and nutrition information.
 
 ![AI Food Recognition](docs/ai-food-recognition.png)
 
-## Project Overview
-
-Traditional diet tracking often requires users to manually search for foods and enter nutrition information item by item.
-
-HappyEat simplifies this process by integrating **Gemini AI image recognition**. Users can upload a meal photo, review the AI-generated nutrition analysis, provide additional context for re-analysis, manually adjust the results, and save the confirmed record.
-
-The platform also connects body records and personal goals with diet tracking. Based on the user's latest body data, activity level, and goal, the system calculates daily recommended calorie intake and compares it with actual consumption.
-
 ---
 
 ## Key Features
@@ -46,9 +38,8 @@ The platform also connects body records and personal goals with diet tracking. B
 - Analyze calories and macronutrients with Gemini API
 - Prioritize integrated convenience-store nutrition data when applicable
 - Provide additional context and request AI re-analysis
-- Human-in-the-loop workflow before saving records
-- Allow users to manually adjust AI-generated results
-- Automatically clean up unused uploaded images when recognition or record creation is cancelled
+- Review and manually adjust AI-generated results before saving
+- Automatically clean up unused uploaded images
 
 ### Food Diary
 
@@ -59,49 +50,16 @@ The platform also connects body records and personal goals with diet tracking. B
 - Filter meal records by meal type and date
 - Display meal photos and nutrition details
 - Summarize daily nutrition intake
+- Calculate personalized recommended daily calories
 
 ### Body Management
 
-- Record height, weight, body fat, muscle mass, waist size, and other body measurements
+- Record weight, body fat, muscle mass, waist size, and other body measurements
 - Calculate BMI, BMR, and TDEE
 - Visualize body measurement data
 - Track recent body trends
 - Manage weight goals and progress
-- Calculate recommended daily calorie intake based on body data and user goals
-
----
-
-## AI Recognition Workflow
-
-```text
-Upload Meal Photo
-       ↓
-Save FoodImage
-       ↓
-Gemini AI Analysis
-       ↓
-Display Recognition Result
-       ↓
- ┌──────────────────────────┐
- │ Result needs correction? │
- └──────────────────────────┘
-       ↓ Yes
-Provide Additional Context
-       ↓
-Gemini Re-analysis
-       ↓
-Review Result
-       ↓
-Manual Adjustment
-       ↓
-User Confirmation
-       ↓
-Save FoodRecord
-```
-
-The AI result is **not saved directly**.
-
-HappyEat uses a **Human-in-the-loop** approach, allowing users to verify and modify AI-generated nutrition information before creating the final food record.
+- Calculate recommended calorie intake based on body data and user goals
 
 ---
 
@@ -135,76 +93,35 @@ HappyEat uses a **Human-in-the-loop** approach, allowing users to verify and mod
 
 ---
 
-## System Architecture
+## AI Recognition Workflow
 
 ```text
-Vue 3 Frontend
-      ↓
-API Service / Axios
-      ↓
-ASP.NET Core Web API
-      ↓
-Service Layer
-      ↓
-Entity Framework Core
-      ↓
-Microsoft SQL Server
-
-           +
-
-Meal Image
-    ↓
-FoodImage API
-    ↓
-Gemini Service
-    ↓
-Gemini API
-    ↓
-Nutrition Analysis
+Upload Meal Photo
+       ↓
+Save FoodImage
+       ↓
+Gemini AI Analysis
+       ↓
+Display Recognition Result
+       ↓
+Need Correction?
+       │
+       ├── Yes → Provide Additional Context
+       │              ↓
+       │       Gemini Re-analysis
+       │              ↓
+       └────────── Review Result
+                      ↓
+               Manual Adjustment
+                      ↓
+               User Confirmation
+                      ↓
+               Save FoodRecord
 ```
 
-The frontend follows the following responsibility flow:
+AI-generated results are **not saved directly**.
 
-```text
-View
- ↓
-Component
- ↓
-Composable
- ↓
-API Service
- ↓
-ASP.NET Core Web API
-```
-
-This separation keeps UI presentation, business interaction logic, and API communication independently maintainable.
-
----
-
-## Database Design
-
-Main entities used in the implemented modules include:
-
-```text
-Users
- ├── BodyRecords
- ├── UserGoals
- ├── FoodImages
- └── FoodRecords
-          │
-          └── FoodRecordItems
-                 ├── Food
-                 └── Drink
-```
-
-### Key Relationships
-
-- One user can have multiple body records
-- One user can have multiple food records
-- One food record can contain multiple food record items
-- A food record can optionally reference one uploaded image
-- A food record item can reference either Food or Drink data
-- AI-generated or custom items can exist without a Food or Drink foreign key
+HappyEat uses a **Human-in-the-loop** approach. Users can review the initial analysis, provide additional context for re-analysis, manually adjust the results, and save the record only after confirmation.
 
 ---
 
@@ -212,74 +129,49 @@ Users
 
 ### Human-in-the-loop AI Design
 
-AI recognition results are never directly stored as final records.
+Instead of treating AI output as the final result, HappyEat separates **AI analysis** from **record creation**.
 
-Users can:
-
-1. Review the initial AI analysis
-2. Provide additional information when the result is inaccurate
-3. Request Gemini to analyze the same image again
-4. Manually modify food names, quantities, and nutrition values
-5. Save the record only after confirmation
-
-This design reduces the impact of uncertain AI predictions while keeping the food logging experience efficient.
+This allows users to verify food items, quantities, and nutrition information before the data becomes part of their food diary.
 
 ### Convenience-Store Nutrition Matching
 
 During development, AI-generated nutrition values for packaged convenience-store foods were sometimes inaccurate.
 
-To improve reliability, public nutrition information for selected convenience-store products is integrated into the backend analysis process.
-
-When applicable, the system prioritizes these known nutrition values before generating the final analysis.
+To improve reliability, public nutrition information for selected convenience-store products is integrated into the backend analysis process. When applicable, known nutrition data is prioritized during AI analysis.
 
 ### Food Image Lifecycle Management
 
-Meal images are stored independently from food records.
-
-The system handles unused images to prevent orphaned database records and files:
+Uploaded meal images are managed independently from food records.
 
 ```text
 Upload Image
-    ↓
+     ↓
 AI Recognition
-    │
-    ├── Recognition Failed → Delete unused image
-    │
-    └── Recognition Success
-              ↓
-         User Confirmation
-              │
-              ├── Cancel → Delete unused image
-              │
-              └── Save → Keep image with FoodRecord
+     │
+     ├── Failed / Cancelled → Delete unused image
+     │
+     └── Confirmed
+             ↓
+        Save FoodRecord
+             ↓
+          Keep image
 ```
 
-### Nutrition Calculation
+This prevents unused image records and files from remaining after failed or cancelled recognition.
 
-Food and drink search results provide base nutrition values.
+### Dynamic Nutrition Calculation
 
-The frontend calculates nutrition dynamically based on quantity:
+Food and drink search results provide base nutrition values. Nutrition values are recalculated according to the quantity selected by the user.
 
 ```text
 Nutrition = Base Nutrition × Quantity
 ```
 
-For example:
-
-```text
-Food:
-1 unit = 100 g
-1.5 units = 150 g
-
-Drink:
-1 unit = selected serving size
-```
-
 Meal-level calories and macronutrients are then calculated from all food record items.
 
-### Recommended Daily Calories
+### Personalized Recommended Calories
 
-Recommended calorie intake connects Body Management with Food Diary.
+Body Management and Food Diary are connected through the user's body data and personal goal.
 
 ```text
 User Profile
@@ -305,10 +197,101 @@ Muscle Gain → TDEE + 300 kcal
 
 ---
 
+## System Architecture
+
+```text
+Vue 3 Frontend
+       ↓
+API Services / Axios
+       ↓
+ASP.NET Core Web API
+       ↓
+Service Layer
+       ↓
+Entity Framework Core
+       ↓
+Microsoft SQL Server
+
+        +
+
+Meal Image
+    ↓
+FoodImage API
+    ↓
+Gemini Service
+    ↓
+Gemini API
+    ↓
+Nutrition Analysis
+```
+
+### Frontend Architecture
+
+The frontend separates UI components, reusable stateful logic, and API communication through Vue components, composables, and service modules.
+
+```text
+Views / Components
+        ↓
+    Composables
+        ↓
+   API Services
+        ↓
+      Axios
+        ↓
+ASP.NET Core Web API
+```
+
+---
+
+## Database Design
+
+Main entities used in the implemented modules:
+
+```text
+Users
+ ├── BodyRecords
+ ├── UserGoals
+ ├── FoodImages
+ └── FoodRecords
+          │
+          └── FoodRecordItems
+                 ├── Food
+                 └── Drink
+```
+
+### Key Relationships
+
+- One user can have multiple body records
+- One user can have multiple food records
+- One food record can contain multiple food record items
+- A food record can optionally reference one uploaded image
+- A food record item can reference either Food or Drink
+- AI-generated or custom items can exist without a Food or Drink foreign key
+
+---
+
 ## Project Structure
 
 ```text
 HappyEat-Portfolio/
+│
+├── backend/
+│   └── HappyEat.API/
+│       ├── Controllers/
+│       ├── DTOs/
+│       ├── Exceptions/
+│       ├── Mapping/
+│       ├── Models/
+│       ├── Services/
+│       ├── Data/
+│       └── Program.cs
+│
+├── database/
+│
+├── docs/
+│   ├── body-management.png
+│   ├── food-diary.png
+│   └── ai-food-recognition.png
 │
 ├── frontend/
 │   └── src/
@@ -321,17 +304,9 @@ HappyEat-Portfolio/
 │       ├── views/
 │       └── router/
 │
-└── backend/
-    ├── Controllers/
-    ├── DTOs/
-    ├── Models/
-    ├── Services/
-    ├── Mapping/
-    ├── Exceptions/
-    └── Data/
+├── .gitignore
+└── README.md
 ```
-
-> The actual folder names may differ depending on the local project structure.
 
 ---
 
@@ -339,12 +314,9 @@ HappyEat-Portfolio/
 
 ### Prerequisites
 
-Make sure the following tools are installed:
-
 - Node.js
 - .NET SDK
 - Microsoft SQL Server
-- Visual Studio or Visual Studio Code
 
 ### Frontend
 
@@ -363,7 +335,14 @@ VITE_SERVER_BASE_URL=https://localhost:xxxx
 
 ### Backend
 
-Configure the local database connection string using development settings or User Secrets.
+Navigate to the ASP.NET Core Web API project:
+
+```bash
+cd backend/HappyEat.API
+dotnet restore
+```
+
+Configure the local database connection string using development settings.
 
 Configure the Gemini API key using .NET User Secrets:
 
@@ -371,14 +350,13 @@ Configure the Gemini API key using .NET User Secrets:
 dotnet user-secrets set "Gemini:ApiKey" "YOUR_API_KEY"
 ```
 
-Then run:
+Run the API:
 
 ```bash
-dotnet restore
 dotnet run
 ```
 
-> API keys, local environment files, uploaded images, and development configuration files are excluded from version control.
+> API keys, local environment files, development configuration files, and uploaded meal images are excluded from version control.
 
 ---
 
@@ -386,14 +364,16 @@ dotnet run
 
 HappyEat was originally developed as a collaborative full-stack project.
 
-My primary responsibilities focused on the **Body Management** and **Food Diary** modules, including:
+My primary responsibilities focused on the **Body Management** and **Food Diary** modules. This repository presents and further refines these features as an individual portfolio project.
+
+My work includes:
 
 - Body data management and visualization
-- BMI / BMR / TDEE calculation
+- BMI, BMR, and TDEE calculation
 - User goal and recommended calorie calculation
 - Food diary CRUD workflow
 - Food and drink nutrition search
-- Meal nutrition calculation
+- Dynamic meal nutrition calculation
 - Food image management
 - Gemini AI food recognition integration
 - AI re-analysis with user-provided context
@@ -402,17 +382,15 @@ My primary responsibilities focused on the **Body Management** and **Food Diary*
 - Frontend and backend API integration
 - Database relationship and business rule design
 
-This repository presents and refines these features as an individual portfolio project.
-
 ---
 
 ## Future Improvements
 
-- Authentication and user-specific authorization
+- User authentication and authorization
 - Automated testing
 - Expanded nutrition database
 - Improved AI recognition reliability
-- Deployment and production environment configuration
+- Production deployment
 - Responsive and accessibility improvements
 
 ---

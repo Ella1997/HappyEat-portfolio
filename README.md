@@ -280,7 +280,7 @@ HappyEat-Portfolio/
 │       ├── Controllers/
 │       ├── DTOs/
 │       ├── Exceptions/
-│       ├── Mapping/
+│       ├── Mappings/
 │       ├── Models/
 │       ├── Services/
 │       ├── Data/

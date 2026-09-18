@@ -28,6 +28,7 @@ Table UserGoals{
   GoalType nvarchar(10) [not null]
   TargetWeight decimal(5,2)
   TargetBodyFat decimal(5,2)
+  StartWeight decimal(5,2)
   StartDate date [not null]
   TargetDate date
   IsActive bit [not null]

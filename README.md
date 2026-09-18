@@ -8,6 +8,26 @@ This repository focuses on the **Body Management** and **Food Diary** modules, c
 
 ---
 
+## Preview
+
+### Body Management
+
+Track body measurements, visualize body changes, and monitor personal goal progress.
+
+![Body Management](docs/body-management.png)
+
+### Food Diary
+
+Track daily calorie and macronutrient intake with meal records and personalized calorie recommendations.
+
+![Food Diary](docs/food-diary.png)
+
+### AI-Assisted Food Recognition
+
+Upload a meal photo and let Gemini analyze food items and nutrition information. Users can review the results, provide additional context for re-analysis, and adjust the data before saving.
+
+![AI Food Recognition](docs/ai-food-recognition.png)
+
 ## Project Overview
 
 Traditional diet tracking often requires users to manually search for foods and enter nutrition information item by item.
@@ -112,6 +132,7 @@ HappyEat uses a **Human-in-the-loop** approach, allowing users to verify and mod
 - Google Gemini API (Multi-modal Vision)
 - Structured JSON Output (JSON Schema)
 - Resilient Sequential Model Fallback & Timeout Control
+
 ---
 
 ## System Architecture

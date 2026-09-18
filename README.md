@@ -90,37 +90,28 @@ HappyEat uses a **Human-in-the-loop** approach, allowing users to verify and mod
 ### Frontend
 
 - Vue 3
-- Vite
 - JavaScript
 - Tailwind CSS
 - Axios
 - Vue Router
-- Pinia
-- Chart.js
-- vue-chartjs
+- Chart.js / vue-chartjs
 
 ### Backend
 
 - C#
-- ASP.NET Core Web API
-- .NET 10
-- Entity Framework Core
-- Database-First Development
+- ASP.NET Core Web API (.NET 10)
+- Entity Framework Core (Database-First)
 - RESTful API
-- Global Exception Handling
 
 ### Database
 
 - Microsoft SQL Server
-- Entity Framework Core
 
 ### AI Integration
 
 - Google Gemini API
-- Structured JSON response
-- Multi-model fallback strategy
-- Convenience-store nutrition data integration
-
+- Structured JSON Response
+- Multi-model Fallback
 ---
 
 ## System Architecture

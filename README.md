@@ -109,9 +109,9 @@ HappyEat uses a **Human-in-the-loop** approach, allowing users to verify and mod
 
 ### AI Integration
 
-- Google Gemini API
-- Structured JSON Response
-- Multi-model Fallback
+- Google Gemini API (Multi-modal Vision)
+- Structured JSON Output (JSON Schema)
+- Resilient Sequential Model Fallback & Timeout Control
 ---
 
 ## System Architecture
